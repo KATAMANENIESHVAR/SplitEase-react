@@ -38,15 +38,17 @@ function AuthScreen({ onAuth }) {
     const users = JSON.parse(localStorage.getItem('splitease-react-users') || '[]')
     const normalizedEmail = email.trim().toLowerCase()
     if (mode === 'register') {
-      if (!name.trim()) return setError('Enter your name to create an account.')
-      if (users.some(item => item.email === normalizedEmail)) return setError('An account with this email already exists. Please log in.')
+      if (!name.trim()) { const message = 'Enter your name to create an account.'; setError(message); window.alert(message); return }
+      if (users.some(item => item.email === normalizedEmail)) { const message = 'An account with this email already exists. Please log in.'; setError(message); window.alert(message); return }
       const user = { ...makePerson(crypto.randomUUID(), name.trim(), normalizedEmail), password }
       localStorage.setItem('splitease-react-users', JSON.stringify([...users, user]))
+      window.alert('Account created successfully!')
       onAuth(user)
       return
     }
     const user = users.find(item => item.email === normalizedEmail && item.password === password)
-    if (!user) return setError('Email or password is incorrect. If you are new, create an account first.')
+    if (!user) { const message = 'Email or password is incorrect. If you are new, create an account first.'; setError(message); window.alert(message); return }
+    window.alert('Login successful!')
     onAuth(user)
   }
   return <main className="auth-screen">
